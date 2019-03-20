@@ -6,41 +6,46 @@ properties:
     type: string
   FriendlyOrderReference: 
     type: string
+  Currency:
+    type: string
+  TotalPrice:
+    format: money
+    type: number
   Fulfilment:
     type: object
     properties:
-      Delivery:
+      Method:
+        type: string
+        enum: ['Delivery', 'Collection']
+      CustomerDueDate: 
+        type: string
+        format: date-time
+      CustomerDueAsap:
+        type: boolean
+      PickupTime:
+        type: string
+        format: date-time
+      PrepareFor:
+        type: string
+        format: date-time
+      PreparationTime:
+        type: string
+        format: timespan
+      Address:
         type: object
         properties:
-          PickupTime: 
+          Lines:
+            type: array
+            items:
+              type: string
+          City: 
             type: string
-            format: date-time
-          DueDate: 
+          PostalCode: 
             type: string
-            format: date-time
-          Address:
-            type: object
-            properties:
-              Lines:
-                type: array
-                items:
-                  type: string
-              City: 
-                type: string
-              PostalCode: 
-                type: string
-              Geolocation:
-                "$ref": "#/definitions/location"
-          PhoneNumber: 
-            type: string
-      Collection:
-        type: object
-        properties:
-          PickupTime: 
-            type: string
-            format: date-time
-          PhoneNumber: 
-            type: string
+          Geolocation:
+            "$ref": "#/definitions/location"
+      PhoneNumber: 
+        type: string
   Payment:
     type: object
     properties:
@@ -52,7 +57,10 @@ properties:
             Type: 
               type: string
               enum: ['card','cash','credit','other']
-            PayOnFulfilment: 
+            Value:
+              type: number
+              format: money
+            Paid: 
               type: boolean
   Customer:
     type: object
@@ -64,7 +72,34 @@ properties:
   Items:
     type: array
     items:
-      "$ref": "#/definitions/item"
+      "$ref": "#/definitions/item-v2"
+  PriceBreakdown:
+    type: object
+    properties:
+      Discount:
+        format: money
+        type: number
+      Tips:
+        format: money
+        type: number
+      Taxes:
+        format: money
+        type: number
+      Items:
+        format: money
+        type: number
+      Fees:
+        type: object
+        properties:
+          Delivery:
+            format: money
+            type: number
+          ServiceCharge:
+            format: money
+            type: number
+          Other:
+            format: money
+            type: number
   NoteFromCustomer: 
     type: string
   IsTest: 
